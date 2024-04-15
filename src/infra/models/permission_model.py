@@ -14,6 +14,8 @@ class PermissionModel(Base):
     :param code: код права доступа
     :param description: описание прав доступа
     :param users: все юзеры, у которых есть это право доступа
+    :param project_members: все участники проекта, у которых есть это право доступа
+
     """
     __tablename__ = "permissions"
 
@@ -23,5 +25,10 @@ class PermissionModel(Base):
     users: Mapped[List["UserModel"]] = relationship(
         back_populates="permissions",
         secondary="user_permission",
+        lazy="raise_on_sql"
+    )
+    project_members: Mapped[List["ProjectUserModel"]] = relationship(
+        back_populates="permissions",
+        secondary="project_permission",
         lazy="raise_on_sql"
     )

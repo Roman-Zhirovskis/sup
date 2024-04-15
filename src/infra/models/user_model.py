@@ -48,3 +48,9 @@ class UserModel(Base):
         secondary="user_permission",
         lazy="raise_on_sql"
     )
+    invites: Mapped[List["InviteRegistrationModel"]] = relationship(
+        back_populates="author"
+    )
+    projects: Mapped[List["InviteRegistrationModel"]] = relationship(
+        back_populates="user"
+    )

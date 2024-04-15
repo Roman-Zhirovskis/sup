@@ -8,7 +8,7 @@ class Base(DeclarativeBase):
     """Базовая модель SqlAlchemy"""
     __abstract__ = True
 
-    id: Mapped[int] = mapped_column(primary_key=True)
+    id: Mapped[int] = mapped_column(primary_key=True, unique=True)
     created_at: Mapped[datetime] = mapped_column(
         TIMESTAMP(timezone=True),
         server_default=func.now()

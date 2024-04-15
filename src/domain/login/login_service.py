@@ -28,6 +28,6 @@ class LoginService:
         access_token_expires = timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
         access_token = Token(access_token=self.token_service.create_access_token(
             user.id, expires_delta=access_token_expires,
-            )
+        )
         )
         return access_token
