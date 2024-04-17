@@ -7,9 +7,6 @@ from src.domain.invitation.invitation_entity import InvitationEntity
 
 class InvitationService:
 
-    def __init__(self, repository):
-        self.repository = None
-
     async def create(self):
         invite = InvitationEntity()
         code = invite.generate_code()

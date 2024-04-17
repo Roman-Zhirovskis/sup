@@ -1,7 +1,10 @@
 from sqlalchemy import select, update, delete
 
 from src.domain.user.user_entity import UserEntity
-from src.domain.user.user_dto import UpdateUserDTO
+from src.domain.user.user_dto import UpdateUserDTO, UserBaseDTO
+from sqlalchemy.exc import IntegrityError
+from src.lib.exceptions import AlreadyExistError
+
 
 from ..database.session import ISession
 from ..models.user_model import UserModel
@@ -15,9 +18,12 @@ class UserRepository:
     async def create(self, user: UserEntity):
         instance = UserModel(**user.__dict__)
         self.session.add(instance)
-        await self.session.commit()
+        try:
+            await self.session.commit()
+        except IntegrityError:
+            raise AlreadyExistError(f'{instance.email} is already exist')
         await self.session.refresh(instance)
-        return instance
+        return self._get_dto(instance)
 
     async def get_list(self, limit: int):
         stmt = select(UserModel).limit(limit)
@@ -52,6 +58,17 @@ class UserRepository:
         await self.session.commit()
         return raw.scalar_one()
 
+    def _get_dto(self, row: UserModel) -> UserBaseDTO:
+        return UserBaseDTO(
+            surname=row.surname,
+            name=row.name,
+            email=row.email,
+            name_telegram=row.name_telegram,
+            nick_telegram=row.nick_telegram,
+            nick_google_meet=row.nick_google_meet,
+            nick_github=row.nick_github,
+            nick_gitlab=row.nick_gitlab
+        )
 
 
 

@@ -7,9 +7,7 @@ class InvitationEntity:
     DAYS = 7
 
     def get_invitation_code(self):
-        code = self.generate_code()
-
-        return code
+        return self.generate_code()
 
     def generate_code(self, length=20):
         character_sheet = string.ascii_letters + string.digits

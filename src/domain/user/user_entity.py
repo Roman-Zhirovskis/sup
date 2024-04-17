@@ -17,14 +17,17 @@ class UserEntity:
     nick_google_meet: str
     nick_gitlab: str
     nick_github: str
-    role_id: int
-    permission_id: int
+    role_id: int | None = None
     password: str | None = None
 
     def get_new_hash_password(self):
         password = self.generate_password()
         self.password = self.hash_password(password)
         return self
+
+    def __post_init__(self):
+        password = self.hash_password(self.password)
+        self.password = password
 
     @staticmethod
     def generate_password(length=20):

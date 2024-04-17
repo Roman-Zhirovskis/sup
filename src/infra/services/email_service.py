@@ -5,6 +5,7 @@ from src.app.config.email_config import settings
 
 class EmailService:
     """Basic Service to send emails"""
+
     def __init__(self):
         # Credentials
 
@@ -16,7 +17,6 @@ class EmailService:
         self.smtp_host = settings.smtp_host
 
     async def send_email(self, recipient_email: str, subject: str, body: str) -> None:
-
         # Message config
         message = MIMEText(body)
         message["Subject"] = subject

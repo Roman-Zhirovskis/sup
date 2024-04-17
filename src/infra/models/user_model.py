@@ -34,7 +34,7 @@ class UserModel(Base):
     surname: Mapped[str] = mapped_column(String(20), nullable=True)
     email: Mapped[str] = mapped_column(String(50), unique=True, index=True)
     password: Mapped[str]
-    avatar_link: Mapped[str] = mapped_column(String(50))
+    avatar_link: Mapped[str] = mapped_column(String(50), nullable=True)
     name_telegram: Mapped[str] = mapped_column(String(50))
     nick_telegram: Mapped[str] = mapped_column(String(50))
     nick_google_meet: Mapped[str] = mapped_column(String(50))
@@ -42,15 +42,9 @@ class UserModel(Base):
     nick_github: Mapped[str] = mapped_column(String(50))
     is_active: Mapped[bool] = mapped_column(default=False)
     is_admin: Mapped[bool] = mapped_column(default=False)
-    role_id: Mapped[int] = mapped_column(ForeignKey("roles.id"))
+    role_id: Mapped[int] = mapped_column(ForeignKey("roles.id"), nullable=True)
     permissions: Mapped[List["PermissionModel"]] = relationship(
         back_populates="users",
         secondary="user_permission",
-        lazy="raise_on_sql"
-    )
-    invites: Mapped[List["InviteRegistrationModel"]] = relationship(
-        back_populates="author"
-    )
-    projects: Mapped[List["InviteRegistrationModel"]] = relationship(
-        back_populates="user"
+        # lazy="raise_on_sql"
     )

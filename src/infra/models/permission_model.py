@@ -27,8 +27,3 @@ class PermissionModel(Base):
         secondary="user_permission",
         lazy="raise_on_sql"
     )
-    project_members: Mapped[List["ProjectUserModel"]] = relationship(
-        back_populates="permissions",
-        secondary="project_permission",
-        lazy="raise_on_sql"
-    )

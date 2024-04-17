@@ -10,8 +10,7 @@ class UserBaseDTO(BaseModel):
     nick_google_meet: constr(max_length=50)
     nick_gitlab: constr(max_length=50)
     nick_github: constr(max_length=50)
-    role_id: int
-    permission_id: int
+    role_id: int = None
 
 
 class CreateUserDTO(UserBaseDTO):
