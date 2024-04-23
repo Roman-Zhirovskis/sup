@@ -1,8 +1,8 @@
 from fastapi import APIRouter, HTTPException
 
 from src.app.dependencies.services import IEmailService
-from src.lib.exceptions import InviteError
 from src.domain.email.email_dto import GetEmailCodeDTO
+from src.lib.exceptions import InviteError
 
 
 router = APIRouter(prefix="/email", tags=["email"])

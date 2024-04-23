@@ -1,4 +1,4 @@
-from sqlalchemy import select, delete, update
+from sqlalchemy import delete, select, update
 
 from src.domain.role.role_dto import CreateRoleDTO, UpdateRoleDTO
 
@@ -7,7 +7,6 @@ from ..models.role_model import RoleModel
 
 
 class RoleRepository:
-
     def __init__(self, session: ISession):
         self.session = session
 

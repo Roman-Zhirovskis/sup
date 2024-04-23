@@ -4,7 +4,6 @@ from sqlalchemy import ForeignKey, String
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from .base_model import Base
-from .user_permission_model import UserPermissionModel
 
 
 class UserModel(Base):
@@ -28,6 +27,7 @@ class UserModel(Base):
     :param created_at: дата создания
     :param updated_at: дата обновления
     """
+
     __tablename__ = "users"
 
     name: Mapped[str] = mapped_column(String(20))
@@ -44,7 +44,5 @@ class UserModel(Base):
     is_admin: Mapped[bool] = mapped_column(default=False)
     role_id: Mapped[int] = mapped_column(ForeignKey("roles.id"))
     permissions: Mapped[List["PermissionModel"]] = relationship(
-        back_populates="users",
-        secondary="user_permission",
-        lazy="raise_on_sql"
+        back_populates="users", secondary="user_permission", lazy="raise_on_sql"
     )

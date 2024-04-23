@@ -1,12 +1,8 @@
-from sqlalchemy import select, update, delete
+from sqlalchemy import delete, select, update
 from sqlalchemy.orm import selectinload
 
+from src.domain.meet.meet_dto import MeetBaseDTO, MeetResponseDTO, UpdateMeetDTO, UserMeetResponseDTO
 from src.lib.exceptions import NotFoundError
-from src.domain.meet.meet_dto import (
-    MeetBaseDTO, UpdateMeetDTO,
-    MeetResponseDTO,
-    UserMeetResponseDTO
-)
 
 from ..database.session import ISession
 from ..models.meet_model import MeetModel
@@ -14,7 +10,6 @@ from ..models.user_meet_model import UserMeetModel
 
 
 class MeetRepository:
-
     def __init__(self, session: ISession):
         self.session = session
 
@@ -31,8 +26,8 @@ class MeetRepository:
         if result.rowcount == 0:
             raise NotFoundError("Meet не найден")
 
-        stmt = select(MeetModel).filter_by(id=pk).options(
-            selectinload(MeetModel.users).selectinload(UserMeetModel.user)
+        stmt = (
+            select(MeetModel).filter_by(id=pk).options(selectinload(MeetModel.users).selectinload(UserMeetModel.user))
         )
         result = await self.session.execute(stmt)
         updated_meet = result.scalar_one()
@@ -46,11 +41,7 @@ class MeetRepository:
             if user:
                 user.color = user_data.color
             else:
-                new_user = UserMeetModel(
-                    meet_id=pk,
-                    user_id=user_data.user_id,
-                    color=user_data.color
-                )
+                new_user = UserMeetModel(meet_id=pk, user_id=user_data.user_id, color=user_data.color)
                 result.users.append(new_user)
                 self.session.add(new_user)
 
@@ -83,13 +74,8 @@ class MeetRepository:
                 name=user_meet.user.name,
                 name_telegram=user_meet.user.name_telegram,
                 nick_telegram=user_meet.user.nick_telegram,
-                color=user_meet.color
+                color=user_meet.color,
             )
             for user_meet in instance.users
         ]
-        return MeetResponseDTO(
-            id=instance.id,
-            title=instance.title,
-            date=instance.date,
-            users=users
-        )
+        return MeetResponseDTO(id=instance.id, title=instance.title, date=instance.date, users=users)

@@ -1,4 +1,4 @@
-from sqlalchemy import select, update, delete
+from sqlalchemy import delete, select, update
 
 from src.domain.permission.permission_dto import CreatePermissionDTO, UpdatePermissionDTO
 
@@ -7,7 +7,6 @@ from ..models.permission_model import PermissionModel
 
 
 class PermissionRepository:
-
     def __init__(self, session: ISession):
         self.session = session
 
@@ -24,12 +23,7 @@ class PermissionRepository:
         return raw.scalars()
 
     async def update(self, dto: UpdatePermissionDTO, pk: int):
-        stmt = (
-            update(PermissionModel)
-            .values(**dto.model_dump())
-            .filter_by(id=pk)
-            .returning(PermissionModel)
-        )
+        stmt = update(PermissionModel).values(**dto.model_dump()).filter_by(id=pk).returning(PermissionModel)
         raw = await self.session.execute(stmt)
         await self.session.commit()
         return raw.scalar_one()

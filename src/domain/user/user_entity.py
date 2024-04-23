@@ -1,14 +1,13 @@
 import secrets
 import string
 from dataclasses import dataclass
-from argon2 import PasswordHasher
 
+from argon2 import PasswordHasher
 from pydantic import EmailStr
 
 
 @dataclass
 class UserEntity:
-
     name: str
     surname: str
     email: EmailStr

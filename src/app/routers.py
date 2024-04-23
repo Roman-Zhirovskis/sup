@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+
 from src.api import (
     system_routes,
     v1_router,

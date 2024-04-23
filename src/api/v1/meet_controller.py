@@ -1,20 +1,23 @@
 from typing import Annotated
 
 from fastapi import APIRouter, Depends
-from src.app.exception_handler import error_handler
+
 from src.app.dependencies.services import IMeetService
+from src.app.exception_handler import error_handler
 from src.domain.meet.meet_dto import (
     CreateMeetDTO,
-    UpdateMeetDTO,
     MeetDTO,
     MeetResponseDTO,
+    UpdateMeetDTO,
 )
 from src.domain.meet.meet_service import MeetService
 from src.infra.database.session import ISession
 from src.infra.repositories.meet_repository import MeetRepository
 from src.infra.repositories.usermeet_repository import UserMeetRepository
 
+
 router = APIRouter(prefix="/meet", tags=["meet"])
+
 
 def provide_service(session: ISession):
     return MeetService(MeetRepository(session), UserMeetRepository(session))

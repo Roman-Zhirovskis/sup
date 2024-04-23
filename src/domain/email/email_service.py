@@ -1,9 +1,7 @@
-from src.app.dependencies.repositories import IEmailRepository
-from src.app.dependencies.repositories import IUserRepository
+from src.app.dependencies.repositories import IEmailRepository, IUserRepository
 
 
 class EmailService:
-
     def __init__(self, repository: IEmailRepository, user_repository: IUserRepository):
         self.repository = repository
         self.user_repository = user_repository

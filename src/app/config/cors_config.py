@@ -1,16 +1,13 @@
 import json
-from typing import List, Any, Type, Tuple
+from typing import Any, List, Tuple, Type
 
 from pydantic import Field
 from pydantic.fields import FieldInfo
-
 from pydantic_settings import BaseSettings, EnvSettingsSource, PydanticBaseSettingsSource
 
 
 class MyCustomSource(EnvSettingsSource):
-    def prepare_field_value(
-            self, field_name: str, field: FieldInfo, value: Any, value_is_complex: bool
-    ) -> Any:
+    def prepare_field_value(self, field_name: str, field: FieldInfo, value: Any, value_is_complex: bool) -> Any:
         if field_name in ["allow_origins", "allow_methods", "allow_headers", "expose_headers"]:
             if value:
                 return value.split(",")

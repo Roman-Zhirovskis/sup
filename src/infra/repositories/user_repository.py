@@ -1,14 +1,13 @@
-from sqlalchemy import select, update, delete
+from sqlalchemy import delete, select, update
 
-from src.domain.user.user_entity import UserEntity
 from src.domain.user.user_dto import UpdateUserDTO
+from src.domain.user.user_entity import UserEntity
 
 from ..database.session import ISession
 from ..models.user_model import UserModel
 
 
 class UserRepository:
-
     def __init__(self, session: ISession):
         self.session = session
 
@@ -51,8 +50,3 @@ class UserRepository:
         raw = await self.session.execute(stmt)
         await self.session.commit()
         return raw.scalar_one()
-
-
-
-
-
