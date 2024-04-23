@@ -1,13 +1,12 @@
 from datetime import date
 
-from src.lib.exceptions import InviteError
+from src.app.dependencies.repositories import IInvitationRepository
 from src.domain.invitation.invitation_dto import InvitationCreateDTO
 from src.domain.invitation.invitation_entity import InvitationEntity
-from src.app.dependencies.repositories import IInvitationRepository
+from src.lib.exceptions import InviteError
 
 
 class InvitationService:
-
     def __init__(self, repository: IInvitationRepository):
         self.repository = repository
 

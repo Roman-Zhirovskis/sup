@@ -1,9 +1,8 @@
 from src.app.dependencies.repositories import IMeetRepository, IUserMeetRepository
-from src.domain.meet.meet_dto import CreateMeetDTO, MeetBaseDTO, UpdateMeetDTO, MeetResponseDTO, MeetDTO
+from src.domain.meet.meet_dto import CreateMeetDTO, MeetBaseDTO, MeetDTO, MeetResponseDTO, UpdateMeetDTO
 
 
 class MeetService:
-
     def __init__(self, repository: IMeetRepository, usermeet_repository: IUserMeetRepository):
         self.repository = repository
         self.usermeet_repository = usermeet_repository
@@ -26,4 +25,3 @@ class MeetService:
         get_meet = MeetResponseDTO(**meet.model_dump())
         get_meet.users = user_meet
         return get_meet
-

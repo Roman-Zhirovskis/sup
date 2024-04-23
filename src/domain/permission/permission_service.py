@@ -1,13 +1,8 @@
 from src.app.dependencies.repositories import IPermissionRepository
-from src.domain.permission.permission_dto import (
-    CreatePermissionDTO,
-    UpdatePermissionDTO,
-    GetPermissionListDTO
-)
+from src.domain.permission.permission_dto import CreatePermissionDTO, GetPermissionListDTO, UpdatePermissionDTO
 
 
 class PermissionService:
-
     def __init__(self, repository: IPermissionRepository):
         self.repository = repository
 

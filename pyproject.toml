@@ -19,6 +19,7 @@ pyjwt = "^2.8.0"
 json-log-formatter = "^0.5.2"
 python-json-logger = "^2.0.7"
 aiosmtplib = "^3.0.1"
+pre-commit = "^3.7.0"
 
 
 [tool.poetry.group.dev.dependencies]
@@ -29,7 +30,7 @@ mypy = "^1.8.0"
 [tool.ruff]
 line-length = 120
 indent-width = 4
-exclude = ["./migrations", "./tests"]
+exclude = ["./migrations", "./tests", "__init__.py"]
 
 [tool.ruff.lint.pycodestyle]
 max-line-length = 120

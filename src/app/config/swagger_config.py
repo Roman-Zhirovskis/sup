@@ -1,10 +1,8 @@
-
 from pydantic import (
-    Field,
-    EmailStr,
     AnyUrl,
+    EmailStr,
+    Field,
 )
-
 from pydantic_settings import BaseSettings
 
 
@@ -20,23 +18,15 @@ class Settings(BaseSettings):
     contact_url: AnyUrl | None = Field("https://t.me/DJWOMS", alias="APP_CONTACT_URL")
     contact_email: EmailStr | None = Field("socanime@gmail.com", alias="APP_CONTACT_EMAIL")
     docs_url: str | None = Field(None, alias="APP_DOCS_URL")
-    redoc_url: str | None = Field(None, alias="APP_REDOC_URL") # noqa
+    redoc_url: str | None = Field(None, alias="APP_REDOC_URL")  # noqa
 
     @property
     def contact(self) -> dict:
-        return {
-            "name": self.contact_name,
-            "url": self.contact_url,
-            "email": self.contact_email
-        }
+        return {"name": self.contact_name, "url": self.contact_url, "email": self.contact_email}
 
     @property
     def license(self) -> dict:
-        return {
-            "name": self.licence_name,
-            "url": self.licence_url,
-            "identifier": self.licence_identifier
-        }
+        return {"name": self.licence_name, "url": self.licence_url, "identifier": self.licence_identifier}
 
 
 settings = Settings()

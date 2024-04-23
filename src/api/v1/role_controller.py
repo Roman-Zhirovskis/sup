@@ -3,6 +3,7 @@ from fastapi import APIRouter
 from src.app.dependencies.services import IRoleService
 from src.domain.role.role_dto import CreateRoleDTO, GetRoleDTO, GetRoleListDTO, UpdateRoleDTO
 
+
 router = APIRouter(prefix="/role", tags=["role"])
 
 

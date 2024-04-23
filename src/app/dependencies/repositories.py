@@ -1,8 +1,9 @@
 from typing import Annotated
+
 from fastapi import Depends
 
-from src.infra.repositories.invitation_repository import InvitationRepository
 from src.infra.repositories.email_repository import EmailRepository
+from src.infra.repositories.invitation_repository import InvitationRepository
 from src.infra.repositories.login_repository import LoginRepository
 from src.infra.repositories.meet_repository import MeetRepository
 from src.infra.repositories.permission_repository import PermissionRepository

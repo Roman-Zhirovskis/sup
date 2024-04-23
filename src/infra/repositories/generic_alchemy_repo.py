@@ -1,4 +1,4 @@
-from typing import Type, TypeVar, Optional
+from typing import Optional, Type, TypeVar
 
 from pydantic import BaseModel
 from sqlalchemy import delete, select, update
@@ -13,9 +13,7 @@ UpdateSchemaType = TypeVar("UpdateSchemaType", bound=BaseModel)
 
 
 class GenericSqlAlchemyRepository:
-    """Репозиторий на основе Generic для работы с базой данных
-
-    """
+    """Репозиторий на основе Generic для работы с базой данных"""
 
     def __init__(self, model: Type[ModelType], db_session: AsyncSession):
         self._session_factory = db_session
@@ -46,12 +44,7 @@ class GenericSqlAlchemyRepository:
             row = await session.execute(select(self.model).filter_by(**filters))
             return row.scalar_one_or_none()
 
-    async def get_multi(
-            self,
-            order: str = "id",
-            limit: int = 100,
-            offset: int = 0
-    ) -> list[ModelType]:
+    async def get_multi(self, order: str = "id", limit: int = 100, offset: int = 0) -> list[ModelType]:
         async with self._session_factory() as session:
             stmt = select(self.model).order_by(order).limit(limit).offset(offset)
             row = await session.execute(stmt)

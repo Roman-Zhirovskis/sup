@@ -1,15 +1,15 @@
-from src.app.dependencies.repositories import IEmailRepository
-from src.app.dependencies.repositories import IUserRepository
-from src.domain.user.user_dto import CreateUserDTO, UpdateUserDTO, UpdatePasswordDTO
-from src.domain.user.user_entity import UserEntity
+from src.app.dependencies.repositories import IEmailRepository, IUserRepository
 from src.domain.email.email_dto import CreateEmailCodeDTO
+from src.domain.user.user_dto import CreateUserDTO, UpdatePasswordDTO, UpdateUserDTO
+from src.domain.user.user_entity import UserEntity
 
 
 class UserService:
-
-    def __init__(self, repository: IUserRepository,
-                 email_repository: IEmailRepository,
-                 ):
+    def __init__(
+        self,
+        repository: IUserRepository,
+        email_repository: IEmailRepository,
+    ):
         self.repository = repository
         self.email_repository = email_repository
 

@@ -1,7 +1,7 @@
 from sqlalchemy import delete, select
 
-from src.infra.models.user_meet_model import UserMeetModel
 from src.domain.meet.meet_dto import UserMeetDTO
+from src.infra.models.user_meet_model import UserMeetModel
 
 
 class UserMeetRepository:
@@ -30,7 +30,4 @@ class UserMeetRepository:
 
     def to_dto(self, users: list[UserMeetModel]) -> list[UserMeetDTO]:
         for user in users:
-            yield UserMeetDTO(
-                user_id=user.user_id,
-                color=user.color
-            )
+            yield UserMeetDTO(user_id=user.user_id, color=user.color)
