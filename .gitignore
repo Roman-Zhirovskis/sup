@@ -10,7 +10,7 @@ dist
 db.sqlite3
 
 venv
-
+.python-version
 .env.dev
 .env
 

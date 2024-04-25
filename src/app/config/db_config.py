@@ -1,4 +1,4 @@
-from pydantic import PostgresDsn, Field
+from pydantic import Field, PostgresDsn
 from pydantic_settings import BaseSettings
 
 
@@ -18,7 +18,7 @@ class Settings(BaseSettings):
 
     @property
     def database_url(self) -> PostgresDsn:
-        """ URL для подключения (DSN)"""
+        """URL для подключения (DSN)"""
         return (
             f"{self.db_url_scheme}://{self.db_user}:{self.db_password}@"
             f"{self.db_host}:{self.db_port}/{self.db_name}?async_fallback=True"

@@ -1,4 +1,4 @@
-from pydantic import BaseModel, constr, conint
+from pydantic import BaseModel, conint, constr
 
 
 class PermissionBaseDTO(BaseModel):

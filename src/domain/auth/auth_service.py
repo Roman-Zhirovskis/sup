@@ -1,29 +1,23 @@
-import jwt
-
 from typing import Annotated
 
-from fastapi import HTTPException, status, Depends
+import jwt
+from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
-
 from pydantic import ValidationError
 
 from src.app.config.security_config import settings
-
 from src.app.dependencies.repositories import IUserRepository
-
 from src.domain.auth.auth_dto import TokenPayload
 from src.domain.user.user_dto import GetUserDTO
 
-reusable_oauth2 = OAuth2PasswordBearer(
-    tokenUrl="/v1/login/access-token"
-)
+
+reusable_oauth2 = OAuth2PasswordBearer(tokenUrl="/v1/login/access-token")
 
 # TODO: это бы убрать в депенденсис
 TokenDep = Annotated[str, Depends(reusable_oauth2)]
 
 
 class AuthService:
-
     async def __call__(self, repository: IUserRepository, token: TokenDep):
         try:
             payload = jwt.decode(token, settings.secret_key, algorithms=[settings.algorithm])

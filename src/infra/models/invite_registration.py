@@ -1,10 +1,11 @@
 from datetime import datetime
-from sqlalchemy import ForeignKey
-from sqlalchemy.orm import Mapped, relationship, mapped_column
+
+from sqlalchemy.orm import Mapped, relationship
+
 from .base_model import Base
 
 
-class InviteRegistrationModel(Base):
+class MeetModel(Base):
     """Модель митапа
 
     :param id: идентификатор
@@ -15,11 +16,9 @@ class InviteRegistrationModel(Base):
     :param created_at: дата создания
     :param updated_at: дата обновления
     """
-    __tablename__ = "invite_registation"
+
+    __tablename__ = "meets"
 
     title: Mapped[str]
-    finish_at: Mapped[datetime]
-    code: Mapped[str]
-    is_active: Mapped[bool]
-    author_id: Mapped[int] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"))
-
+    date: Mapped[datetime]
+    users: Mapped[list["UserMeetModel"]] = relationship("UserMeetModel", lazy="raise_on_sql")

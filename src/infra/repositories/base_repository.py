@@ -1,19 +1,17 @@
 from abc import ABC, abstractmethod
-from typing import Type, Any, Iterable
+from typing import Any, Iterable, Type
 
 from pydantic import BaseModel
 from sqlalchemy import (
+    Delete,
+    Result,
+    ScalarResult,
+    Select,
+    ValuesBase,
+    delete,
     insert,
     select,
     update,
-    delete,
-    ScalarResult,
-    Select,
-    StatementLambdaElement,
-    Result,
-    Insert,
-    ValuesBase,
-    Delete,
 )
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -54,9 +52,7 @@ class SQLAlchemyRepository(Repository):
     model: Type[Base] = None
     response_dto: BaseModel = None
 
-    def __init__(
-        self, session: AsyncSession, auto_commit: bool = None, auto_refresh: bool = None
-    ):
+    def __init__(self, session: AsyncSession, auto_commit: bool = None, auto_refresh: bool = None):
         self.session = session
         self.auto_commit = auto_commit
         self.auto_refresh = auto_refresh
@@ -67,9 +63,7 @@ class SQLAlchemyRepository(Repository):
         response_dto: Base | None = None,
         auto_commit: bool = True,
     ) -> BaseModel:
-        stmt = (
-            insert(self.model).values(**create_dto.model_dump()).returning(self.model)
-        )
+        stmt = insert(self.model).values(**create_dto.model_dump()).returning(self.model)
         res = await self._execute(stmt)
         await self._flush_or_commit(auto_commit)
         return self.to_dto(res.scalar_one(), response_dto)
@@ -99,12 +93,7 @@ class SQLAlchemyRepository(Repository):
         auto_commit: bool = True,
         **filters,
     ) -> BaseModel:
-        stmt = (
-            update(self.model)
-            .values(**update_dto.model_dump())
-            .filter_by(**filters)
-            .returning(self.model)
-        )
+        stmt = update(self.model).values(**update_dto.model_dump()).filter_by(**filters).returning(self.model)
         res = (await self._execute(stmt)).scalar_one_or_none()
         self.check_not_found(res)
         await self._flush_or_commit(auto_commit)
@@ -114,14 +103,10 @@ class SQLAlchemyRepository(Repository):
         stmt = delete(self.model).filter_by(**filters)
         result = await self._execute(stmt)
         if result.rowcount == 0:
-            raise NotFoundError(
-                f"По данным запроса в таблице {self.model.__tablename__} записей не найдено"
-            )
+            raise NotFoundError(f"По данным запроса в таблице {self.model.__tablename__} записей не найдено")
         await self._flush_or_commit(auto_commit)
 
-    def to_dto(
-        self, instance: Base | ScalarResult, dto: BaseModel = None
-    ) -> BaseModel | list[BaseModel]:
+    def to_dto(self, instance: Base | ScalarResult, dto: BaseModel = None) -> BaseModel | list[BaseModel]:
         """
         Метод, преобразующий модели SQLAlchemy к dto.
         """
@@ -134,9 +119,7 @@ class SQLAlchemyRepository(Repository):
     async def _flush_or_commit(self, auto_commit: bool | None) -> None:
         if auto_commit is None:
             auto_commit = self.auto_commit
-        return (
-            await self.session.commit() if auto_commit else await self.session.flush()
-        )
+        return await self.session.commit() if auto_commit else await self.session.flush()
 
     async def _refresh(
         self,
@@ -165,7 +148,5 @@ class SQLAlchemyRepository(Repository):
             raise NotFoundError(msg)
         return item_or_none
 
-    async def _execute(
-        self, statement: ValuesBase | Select[Any] | Delete
-    ) -> Result[Any]:
+    async def _execute(self, statement: ValuesBase | Select[Any] | Delete) -> Result[Any]:
         return await self.session.execute(statement)

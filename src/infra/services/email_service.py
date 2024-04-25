@@ -1,10 +1,13 @@
-import aiosmtplib
 from email.mime.text import MIMEText
+
+import aiosmtplib
+
 from src.app.config.email_config import settings
 
 
 class EmailService:
     """Basic Service to send emails"""
+
     def __init__(self):
         # Credentials
 
@@ -16,12 +19,11 @@ class EmailService:
         self.smtp_host = settings.smtp_host
 
     async def send_email(self, recipient_email: str, subject: str, body: str) -> None:
-
         # Message config
         message = MIMEText(body)
         message["Subject"] = subject
         message["From"] = self.user
-        message['To'] = recipient_email
+        message["To"] = recipient_email
 
         # Email sending
         await aiosmtplib.send(
@@ -32,7 +34,4 @@ class EmailService:
             port=self.smtp_port,
             username=self.user,
             password=self.password,
-
         )
-
-

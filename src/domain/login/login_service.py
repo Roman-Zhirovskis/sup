@@ -2,15 +2,13 @@ from datetime import timedelta
 
 from src.app.config.project_config import settings
 from src.app.dependencies.repositories import ILoginRepository
-from src.lib.exceptions import LoginError
-
-from src.domain.auth.token_service import ITokenService
 from src.domain.auth.token_dto import Token
+from src.domain.auth.token_service import ITokenService
 from src.domain.user.user_entity import UserEntity
+from src.lib.exceptions import LoginError
 
 
 class LoginService:
-
     def __init__(self, repository: ILoginRepository, token_service: ITokenService) -> None:
         self.repository = repository
         self.token_service = token_service
@@ -26,8 +24,10 @@ class LoginService:
             raise LoginError("Подтвердите аккаунт через почту")
 
         access_token_expires = timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
-        access_token = Token(access_token=self.token_service.create_access_token(
-            user.id, expires_delta=access_token_expires,
-        )
+        access_token = Token(
+            access_token=self.token_service.create_access_token(
+                user.id,
+                expires_delta=access_token_expires,
+            )
         )
         return access_token
