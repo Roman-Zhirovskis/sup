@@ -15,4 +15,5 @@ async def confirmation(token: str, service: IUserService, request: Request):
     try:
         await service.confirmation_user(token)
     except InvalidSignatureError as e:
-        raise HTTPException(detail=e)
+        raise HTTPException(detail=str(e))
+
