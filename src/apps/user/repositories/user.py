@@ -46,7 +46,6 @@ class UserRepository:
 
     async def update_active(self, active: bool, pk: int):
         stmt = update(UserModel).values(is_active=active).filter_by(id=pk).returning(UserModel)
-        print(stmt)
         raw = await self.session.execute(stmt)
         await self.session.commit()
         return raw.scalar_one()
