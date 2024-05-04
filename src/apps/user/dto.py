@@ -13,6 +13,11 @@ class UserBaseDTO(BaseModel):
     role_id: int = None
 
 
+class UserDTO(UserBaseDTO):
+    id: int
+    is_active: bool
+
+
 class CreateUserDTO(UserBaseDTO):
     pass
 

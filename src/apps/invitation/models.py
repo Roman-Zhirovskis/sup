@@ -1,7 +1,7 @@
 from datetime import datetime
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import Mapped, relationship, mapped_column
-from src.lib import Base
+from src.lib.base_model import Base
 
 
 class InviteRegistrationModel(Base):
