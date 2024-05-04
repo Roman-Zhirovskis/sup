@@ -9,7 +9,7 @@ router = APIRouter(prefix="/user", tags=["user"])
 @router.get("/confirm/{token}")
 async def confirmation(token: str, service: IUserService, request: Request):
     """
-    controller for registration user
+    controller for confirmation user
     """
     try:
         await service.confirmation_user(token)
