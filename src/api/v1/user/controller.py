@@ -13,7 +13,6 @@ async def confirmation(token: str, service: IUserService, request: Request):
     controller for registration user
     """
     try:
-        confirmed = await service.confirmation_user(token)
-        return Response(status_code=200)
+        await service.confirmation_user(token)
     except InvalidSignatureError as e:
         raise HTTPException(detail=e)
