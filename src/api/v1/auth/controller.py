@@ -14,19 +14,7 @@ async def registration(dto: RegistrationDTO, service: IAuthService, request: Req
     """
     controller for registration user
     """
-    print(request.base_url)
     try:
         return await service.registration(dto)
     except (RegistrationError, ValueError) as e:
         raise HTTPException(status_code=400, detail=str(e))
-
-
-# @router.post("/invite", response_model=UserBaseDTO)
-# async def invite(dto: CreateInviteUserDTO, service: IInvitationService):
-#     """
-#     controller for registration user
-#     """
-#     try:
-#         return await service.create(dto)
-#     except (RegistrationError, ValueError) as e:
-#         raise HTTPException(status_code=400, detail=str(e))

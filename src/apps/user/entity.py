@@ -1,6 +1,7 @@
 import secrets
 import string
 from dataclasses import dataclass
+from src.config.security import settings
 from argon2 import PasswordHasher
 
 from pydantic import EmailStr
@@ -31,8 +32,7 @@ class UserEntity:
 
     @staticmethod
     def hash_password(password: str) -> str:
-        # TODO salt нужно вынести в настройки
-        salt = "BD^G$#bIUb9PHBF(G#E$_790G(UB#$9E"
+        salt = settings.secret_key
         hashed = PasswordHasher().hash(password.encode("utf-8"), salt=salt.encode("utf-8"))
         return hashed
 

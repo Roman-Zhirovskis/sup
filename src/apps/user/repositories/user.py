@@ -5,7 +5,7 @@ from src.lib.exceptions import AlreadyExistError
 from src.apps.user.entity import UserEntity
 from src.config.database.session import ISession
 from src.apps.user.models.user import UserModel
-from src.apps.user.dto import UpdateUserDTO, UserBaseDTO
+from src.apps.user.dto import UpdateUserDTO, UserDTO
 
 
 class UserRepository:
@@ -45,7 +45,8 @@ class UserRepository:
         await self.session.commit()
 
     async def update_active(self, active: bool, pk: int):
-        stmt = update(UserModel).values(active=active).filter_by(id=pk).returning(UserModel)
+        stmt = update(UserModel).values(is_active=active).filter_by(id=pk).returning(UserModel)
+        print(stmt)
         raw = await self.session.execute(stmt)
         await self.session.commit()
         return raw.scalar_one()
@@ -56,8 +57,10 @@ class UserRepository:
         await self.session.commit()
         return raw.scalar_one()
 
-    def _get_dto(self, row: UserModel) -> UserBaseDTO:
-        return UserBaseDTO(
+    def _get_dto(self, row: UserModel) -> UserDTO:
+        return UserDTO(
+            id=row.id,
+            is_active=row.is_active,
             surname=row.surname,
             name=row.name,
             email=row.email,
