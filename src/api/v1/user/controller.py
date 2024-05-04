@@ -1,6 +1,5 @@
-from fastapi import APIRouter, HTTPException, Request, Response
+from fastapi import APIRouter, HTTPException, Request
 
-from src.apps.user.dto import UserBaseDTO
 from src.apps.user.depenends.service import IUserService
 from src.apps.auth.exceptions.token import InvalidSignatureError
 
