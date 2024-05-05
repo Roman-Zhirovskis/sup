@@ -1,5 +1,5 @@
 from src.apps.user.depenends.repository import IUserRepository
-from src.apps.user.dto import UserDTO, UserBaseDTO
+from src.apps.user.dto import FindUserDTO, UserBaseDTO, UserDTO
 from src.apps.user.entity import UserEntity
 from src.apps.auth.dependends.token_service import ITokenService
 from src.apps.email.dependends import IEmailService
@@ -24,6 +24,10 @@ class UserService:
         token = await self.token_service.encode_token(payload=payload)
         link = f'{domain}/v1/user/confirm/{token}'
         return link
+
+    async def get_user(self, dto: FindUserDTO) -> UserDTO:
+        user = await self.repository.get_user(dto=dto)
+        return user
 
     async def create(self, dto: UserEntity, email_confirmation=False) ->UserBaseDTO:
         user = await self.repository.create(dto)
