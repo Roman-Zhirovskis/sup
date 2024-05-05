@@ -5,10 +5,11 @@ from src.lib.exceptions import AlreadyExistError
 from src.apps.user.entity import UserEntity
 from src.config.database.session import ISession
 from src.apps.user.models.user import UserModel
-from src.apps.user.dto import UpdateUserDTO, UserDTO
+from src.apps.user.dto import UpdateUserDTO, UserDTO, FindUserDTO
 
 
 class UserRepository:
+    model = UserModel
 
     def __init__(self, session: ISession):
         self.session = session
@@ -22,6 +23,12 @@ class UserRepository:
             raise AlreadyExistError(f'{instance.email} is already exist')
         await self.session.refresh(instance)
         return self._get_dto(instance)
+
+    async def get_user(self, dto: FindUserDTO):
+        stmt = select(self.model).filter_by(**dto.model_dump(exclude_none=True))
+        raw = await self.session.execute(stmt)
+        result = raw.scalar_one_or_none()
+        return self._get_dto(result) if result else None
 
     async def get_list(self, limit: int):
         stmt = select(UserModel).limit(limit)
@@ -61,6 +68,7 @@ class UserRepository:
             id=row.id,
             is_active=row.is_active,
             surname=row.surname,
+            password=row.password,
             name=row.name,
             email=row.email,
             name_telegram=row.name_telegram,

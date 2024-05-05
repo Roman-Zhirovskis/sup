@@ -1,12 +1,14 @@
 from datetime import date
-from src.lib import InviteError
+
+from src.apps.invitation.exceptions import InviteError
+from src.apps.email.dependends import IEmailService
 from old.src.domain.invitation.invitation_dto import InvitationCreateDTO
 from old.src.domain.invitation.invitation_entity import InvitationEntity
 
 
 class InvitationService:
 
-    def __init__(self, repository, email_service):
+    def __init__(self, repository, email_service: IEmailService):
         self.repository = repository
         self.email_service = email_service
 
