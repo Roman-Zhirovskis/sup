@@ -1,6 +1,6 @@
-from pydantic import BaseModel, EmailStr, constr
-from pydantic import model_validator
 import re
+
+from pydantic import BaseModel, EmailStr, constr, model_validator
 
 
 class RegistrationDTO(BaseModel):
@@ -19,10 +19,14 @@ class RegistrationDTO(BaseModel):
     def code_validate(self):
         if self.password != self.password2:
             raise ValueError("password missmatch")
-        reg = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!#%*?&]{6,20}$"
+        reg = r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!#%*?&]{6,20}$"
         pat = re.compile(reg)
+        print(pat)
         mat = re.search(pat, self.password)
+        print(mat)
         if not mat:
-            raise ValueError('password must contain minimum 8 characters, at least one capital letter, number and '
-                             'special character')
+            raise ValueError(
+                "password must contain minimum 8 characters, at least one capital letter, number and "
+                "special character"
+            )
         return self
