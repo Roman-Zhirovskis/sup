@@ -21,9 +21,7 @@ class RegistrationDTO(BaseModel):
             raise ValueError("password missmatch")
         reg = r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!#%*?&]{6,20}$"
         pat = re.compile(reg)
-        print(pat)
         mat = re.search(pat, self.password)
-        print(mat)
         if not mat:
             raise ValueError(
                 "password must contain minimum 8 characters, at least one capital letter, number and "

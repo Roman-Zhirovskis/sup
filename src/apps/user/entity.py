@@ -9,7 +9,6 @@ from pydantic import EmailStr
 
 @dataclass
 class UserEntity:
-
     name: str
     surname: str
     email: EmailStr
@@ -20,6 +19,7 @@ class UserEntity:
     nick_github: str
     role_id: int | None = None
     password: str | None = None
+    is_admin: bool | None = None
 
     def get_new_hash_password(self):
         password = self.generate_password()
