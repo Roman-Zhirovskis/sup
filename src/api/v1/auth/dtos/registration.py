@@ -1,4 +1,5 @@
 import re
+from typing import Optional
 
 from pydantic import BaseModel, EmailStr, constr, model_validator
 
@@ -14,6 +15,7 @@ class RegistrationDTO(BaseModel):
     nick_google_meet: constr(max_length=50)
     nick_gitlab: constr(max_length=50)
     nick_github: constr(max_length=50)
+    role_id: Optional[int] = None
 
     @model_validator(mode="after")
     def code_validate(self):
