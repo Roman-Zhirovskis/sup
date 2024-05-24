@@ -2,8 +2,9 @@ import asyncio
 
 from typer import Option, Typer
 
-from commands.createuser.createadminrepository import create_user
 from commands.createuser.registeradmindto import CLICreateAdminDTO
+from commands.createuser.repository import create_role, create_user
+from src.apps.user.dto import CreateRoleDTO
 from src.apps.user.entity import UserEntity
 
 
@@ -38,11 +39,18 @@ def createsuperuser(
         nick_gitlab=nick_gitlab,
         nick_github=nick_github,
     )
+
     registration_data = dto.model_dump()
     registration_data["is_admin"] = True
     user_entity = UserEntity(**registration_data)
 
     asyncio.run(create_user(user_data=user_entity))
+
+
+@app.command(help="Create a new role")
+def createrole(name: str = Option(..., help="Название роли"), color: str = Option(..., help="Цвет роли")):
+    dto = CreateRoleDTO(name=name, color=color)
+    asyncio.run(create_role(dto))
 
 
 if __name__ == "__main__":

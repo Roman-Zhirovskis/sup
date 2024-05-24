@@ -49,3 +49,8 @@ class UpdateUserDTO(UserBaseDTO):
 
 class UpdatePasswordDTO(BaseModel):
     password: str
+
+
+class CreateRoleDTO(BaseModel):
+    name: str
+    color: str
