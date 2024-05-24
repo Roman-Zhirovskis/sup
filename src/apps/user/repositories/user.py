@@ -1,7 +1,9 @@
+import re
+from asyncpg import ForeignKeyViolationError
 from sqlalchemy import select, update, delete
 from sqlalchemy.exc import IntegrityError
-
-from src.lib.exceptions import AlreadyExistError
+from asyncpg.exceptions import UniqueViolationError
+from src.lib.exceptions import AlreadyExistError, InvalidRoleIDError
 from src.apps.user.entity import UserEntity
 from src.config.database.session import ISession
 from src.apps.user.models.user import UserModel
@@ -19,8 +21,14 @@ class UserRepository:
         self.session.add(instance)
         try:
             await self.session.commit()
-        except IntegrityError:
-            raise AlreadyExistError(f'{instance.email} is already exist')
+
+        except IntegrityError as e:
+            error_message = e.orig.args[0]
+
+            if "ForeignKeyViolationError" in error_message:
+                raise InvalidRoleIDError(f"ForeignKeyViolationError {error_message}")
+            else:
+                raise AlreadyExistError(f"UniqueViolationError - {error_message}")
         await self.session.refresh(instance)
         return self._get_dto(instance)
 
@@ -75,5 +83,5 @@ class UserRepository:
             nick_telegram=row.nick_telegram,
             nick_google_meet=row.nick_google_meet,
             nick_github=row.nick_github,
-            nick_gitlab=row.nick_gitlab
+            nick_gitlab=row.nick_gitlab,
         )

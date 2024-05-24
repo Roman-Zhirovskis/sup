@@ -16,3 +16,7 @@ class NotFoundError(Exception):
 
 class AlreadyExistError(Exception):
     pass
+
+
+class InvalidRoleIDError(Exception):
+    pass
