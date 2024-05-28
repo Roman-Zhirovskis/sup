@@ -18,9 +18,7 @@ class AuthService:
         user_entity = UserEntity(**registration_data)
         try:
             return await self.user_service.create(user_entity, email_confirmation=True)
-        except AlreadyExistError as e:
-            raise RegistrationError(e)
-        except InvalidRoleIDError as e:
+        except (AlreadyExistError, InvalidRoleIDError) as e:
             raise RegistrationError(e)
 
     async def login(self, dto: LoginDTO):
